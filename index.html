@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400&family=Outfit:wght@100;200;300;400;500;600;700;800;900&family=Poppins:wght@100;200;300;400;500;700;800;900&family=Raleway:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <title>Speech Detection</title>
+</head>
+<body>
+
+  <div class="words" contenteditable>
+  </div>
+
+<script>
+  window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+  const recognition= new SpeechRecognition();
+  recognition.interimResults = true;
+  recognition.lang = 'en-US';
+  
+
+  let p=document.createElement('p');
+  const word=document.querySelector(".words");
+  word.appendChild(p)
+
+  recognition.addEventListener('result',(e)=>{
+    const transcript = Array.from(e.results)
+      .map(result => result[0])
+      .map(result => result.transcript)
+      .join('');
+
+      const poopScript = transcript.replace(/poop|poo|shit|dump/gi, '💩');
+      
+      // now you will see it in the screen/DOM
+      p.textContent = poopScript;
+
+      if (e.results[0].isFinal) {
+        p = document.createElement('p');
+        word.appendChild(p);
+      }
+
+      if(transcript.includes("JavaScript")){
+        console.log("This is fun ya'll, im gonna make it big one day");
+      }
+
+      console.log(transcript);
+  });
+  recognition.addEventListener('end', recognition.start);
+
+  recognition.start()
+
+
+</script>
+
+
+  <style>
+    html {
+      font-size: 10px;
+    }
+
+    body {
+      background: linear-gradient(90deg, rgba(149,61,203,1) 19%, rgba(203,61,95,1) 41%, rgba(255,179,0,1) 77%);
+      font-family: "Poppins",'helvetica neue';
+      font-weight: 200;
+      font-size: 20px;
+    }
+
+    .words {
+      max-width: 500px;
+      margin: 50px auto;
+      background: white;
+      border-radius: 5px;
+      box-shadow: 10px 10px 0 rgba(0,0,0,0.1);
+      padding: 1rem 2rem 1rem 5rem;
+      background: -webkit-gradient(linear, 0 0, 0 100%, from(#d9eaf3), color-stop(4%, #fff)) 0 4px;
+      background-size: 100% 3rem;
+      position: relative;
+      line-height: 3rem;
+    }
+    
+    p {
+      margin: 0 0 3rem;
+    }
+
+    .words:before {
+      content: '';
+      position: absolute;
+      width: 4px;
+      top: 0;
+      left: 30px;
+      bottom: 0;
+      border: 1px solid;
+      border-color: transparent #efe4e4;
+    }
+  </style>
+
+</body>
+</html>
